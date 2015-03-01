@@ -1,0 +1,7 @@
+useDynLib(SDDE)
+import(igraph)
+import(doParallel)
+import(foreach)
+import(iterators)
+import(parallel)
+exportPattern("^[[:alpha:]]+")
