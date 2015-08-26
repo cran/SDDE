@@ -1,0 +1,20 @@
+NEWS/ChangeLog for SDDE 1.0.1 (22-08-2015)
+-------------------------------------------------------------------------
+
+NEW FEATURES
+
+* Added the Watts-Strogatz model in the random_network function as well 
+  as a 'fixed' number of edges model.  
+* Added the SDDE.version function.
+* Added a plot_network function.
+
+CHANGES
+
+* Removed a call to info_network in the save_network function for faster execution.
+
+FIXES
+
+* Corrected the code to be compatible with igraph v1.0.0 .
+* Fixed some of the sample networks to be compatible with igraph v1.0.0 .
+
+

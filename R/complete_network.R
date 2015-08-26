@@ -522,14 +522,17 @@ complete_network<-function(g1,g2,taxnames='',maxdistance=0,maxtime=3600,maxnode=
 				} 
 				else			
 				{
+					# We take the hypothesis that new edges are only created by the addition of new nodes. 
 					if(g1short_ij>iso_g3short_ij ){
 						rac=rac+1;
 						if (verbose) cat(g1names[i],g1names[j],"Shortcut",iso_g3short,"\n",sep="\t",file=file, append=TRUE);
 					} 
+					# Not always true since it is possible that we don't go through a new node (?)
 					else if (iso_g3short_ij>g1short_ij) {
 						detour=detour+1;
 						if (verbose) cat(g1names[i],g1names[j],"Detour",iso_g3short_ij,"\n",sep="\t", file=file, append=TRUE);				
-					} else {					
+					} 
+					else {					
 						
 						paths<-get.all.shortest.paths(g2_without_k,g1names[i],g1names[j])$res;					
 						# Test if the a and b can reach any k
@@ -682,7 +685,7 @@ complete_network<-function(g1,g2,taxnames='',maxdistance=0,maxtime=3600,maxnode=
 													if(any(V(g2_without_k_and_j)[p] %in% V(g2_without_k_and_i)[q])) {
 														vertex=V(g2_without_k_and_j)[p]$name %in% V(g2_without_k_and_i)[q]$name;
 														p2= p[vertex]
-														p2=V(g2_without_k_and_j)[p2[1]]$name;														
+														p2=V(g2_without_k_and_j)[p2]$name;														
 														g2_without_k_and_p2=delete.vertices(g2_without_k,p2)
 														paths3<-get.all.shortest.paths(g2_without_k_and_p2,g1names[j],kname)$res;
 														if (length(paths3)>0) {

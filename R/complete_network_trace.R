@@ -494,7 +494,7 @@ if (length(g2_unique_names_primed)==0) {
 														if(any(V(g2_without_k_and_j)[p] %in% V(g2_without_k_and_i)[q])) {
 															vertex=V(g2_without_k_and_j)[p]$name %in% V(g2_without_k_and_i)[q]$name;
 															p2= p[vertex]
-															p2=V(g2_without_k_and_j)[p2[1]]$name;														
+															p2=V(g2_without_k_and_j)[p2]$name;														
 															g2_without_k_and_p2=delete.vertices(g2_without_k,p2)
 															paths3<-get.all.shortest.paths(g2_without_k_and_p2,g1names[j],kname)$res;
 															if (length(paths3)>0) {

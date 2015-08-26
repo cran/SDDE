@@ -3,13 +3,18 @@
 \alias{random_network}
 \title{creates random augmented networks X and Y}
  \description{This function allows the user to create random network X and an associated augmented network Y using either the Erdos-Renyi model or the Barabasi-Albert model.}
-\usage{random_network(original_node, additional_node, ngroup, vertex_ratio, type)}
+\usage{random_network(original_node, additional_node, ngroup, edge_ratio,total_edge, type)}
 \arguments{
   \item{original_node}{the number of nodes in the original network X (default=25)}
   \item{additional_node}{the number of additional node in network Y (default=5)}
   \item{ngroup}{the number of additional taxa groups in network Y (default=1)}
-  \item{vertex_ratio}{the vertex to node ratio (default=between 1 and 5)}
-  \item{type}{Either 'erdos' for the Erdos-Renyi model or 'barabasi' for the Barabasi-Albert model}
+  \item{edge_ratio}{the edge to node ratio (default=between 1 and 5)}
+  \item{total_edge}{the number of edges in the fixed model}
+  \item{type}{Either 'erdos' for the Erdos-Renyi model,
+              'barabasi' for the Barabasi-Albert model,
+			  'watts' for the Watts-Strogatz model or
+			  'fixed' fixed model allowing a defined number of edges
+			  }
 }
 
 \value{

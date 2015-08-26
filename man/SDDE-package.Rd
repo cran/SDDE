@@ -25,8 +25,8 @@
 	\tabular{ll}{
 		Package: \tab SDDE\cr
 		Type: \tab Package\cr
-		Version: \tab 1.0\cr
-		Date: \tab 2015-02-22\cr
+		Version: \tab 1.0.1\cr
+		Date: \tab 2015-08-20\cr
 		License: \tab GPL-2\cr
 		Maintainer: \tab Etienne Lord <m.etienne.lord@gmail.com>, \cr \tab François-Joseph Lapointe <francois-joseph.lapointe@umontreal.ca>
 	}
@@ -41,7 +41,7 @@
 
 	Function \code{\link{random_network}} creates a random network X and an augmented network Y using Erdos-Renyi or Barabási–Albert models.
 
-	Function \code{\link{save_network}} creates rendering of network X and network Y in various file formats (svg, png and eps).
+	Function \code{\link{save_network}} and code{\link{plot_network}} creates rendering of network X and network Y in various file formats (svg, png and eps).
 
 	Function \code{\link{load_network}} loads a network from a list of edges  (tab-separated) which is compatible with the \code{\link{complete_network}}, \code{\link{complete_restart}} and \code{\link{sample_network}} function.
 
@@ -66,6 +66,7 @@
 \code{\link{sample_network}},
 \code{\link{load_network}},
 \code{\link{save_network}}
+\code{\link{plot_network}}
 }
 
 %\examples{}

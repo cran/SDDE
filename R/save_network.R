@@ -21,7 +21,7 @@
 save_network<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames='', mode='png', imagesize=800) {	
 	#g1 = blue
 	#g2 = orange
-	cat("Saving graph [",filename,"]\n");	
+	if (mode!="screen") cat("Saving graph [",filename,"]\n");	
 	# Color from Kelly KL. Twenty-two colors of maximum contrast. Col Eng 1976;3:26-27. See also :
 	# http://jfly.iam.u-tokyo.ac.jp/color/, and Campadelli, P., Posenato, R., & Schettini, R. (1999). An algorithm for the selection of high-contrast color sets. Color Research & Application, 24(2), 132-138.
 	Kelly_color=c("#FFFFFF","#FFB300","#803E75","#FF6800","#A6BDD7","#C10020","#CEA262","#817066","#007D34","#F6768E","#00538A","#FF7A5C","#53377A","#FF8E00","#B32851","#F4C800","#7F180D","#93AA00","#593315","#F13A13","#232C16","#000000")	  
@@ -59,13 +59,12 @@ save_network<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames='',
 		V(g2)$color <- ifelse((V(g2)$name %in% V(g1)$name), "white", "orange");
 		V(g1)$color <-"white";
 	}
-	V(g2)$size=10;	
+	V(g2)$size=10;
 	V(g1)$size=10;
 	
 	#Unique
 	vertex_of_g2<-V(g2)[!(V(g2) %in% V(g1))]
 	vertex_of_g1=length(V(g1)$name)
-	info_network(g1,g2);
 	if (length(V(g2)) > 50) {
 		save_network_big(g1,g2, filename, layout, taxnames, mode, imagesize);
 	} else {		
@@ -81,6 +80,8 @@ save_network<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames='',
 			vertex.label.font=1,			#the font of the name labels
 			vertex.label=V(g2)$name		#specifies the lables of the vertices. in this case the 'name' attribute is used
 			);
+			legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+			a=dev.off();		
 		} else if (mode=='svg') {
 			f2<-paste(filename,"_2",".svg", sep="");
 			svg(f2);
@@ -93,7 +94,9 @@ save_network<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames='',
 			vertex.label.font=1,			#the font of the name labels
 			vertex.label=V(g2)$name		#specifies the lables of the vertices. in this case the 'name' attribute is used
 			);
-		} else {
+			legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+			a=dev.off();		
+		} else if (mode=='eps'){
 			f2<-paste(filename,"_2",".eps", sep="");
 			postscript(f2, horizontal = FALSE, fonts=c("serif", "Palatino"), onefile = FALSE, paper = "special", height = 8, width = 10)
 				plot(g2, 
@@ -107,10 +110,24 @@ save_network<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames='',
 				vertex.label.font=1,			#the font of the name labels
 				vertex.label=V(g1)$name		#specifies the lables of the vertices. in this case the 'name' attribute is used
 				);
+				legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+				a=dev.off();		
+		} else {			
+				plot(g2, 
+				layout=layout, 
+				vertex.label.family="serif",
+				edge.label.family="Palatino", 			
+				main=filename,	#specifies the title
+				vertex.label.dist=0,			#puts the name labels slightly off the dots
+				vertex.frame.color='black', 		#the color of the border of the dots 
+				vertex.label.color='black',		#the color of the name labels
+				vertex.label.font=1,			#the font of the name labels
+				vertex.label=V(g1)$name		#specifies the lables of the vertices. in this case the 'name' attribute is used
+				);
+				legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);				
 		}		
 		#layout=layout,	# the layout method. see the igraph documentation for details
-		legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
-		a=dev.off();		
+		
 		if (mode=='png') {
 			f1<-paste(filename,"_1",".png", sep="");
 			png(f1, 800, 800, pointsize = 14);
@@ -123,6 +140,8 @@ save_network<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames='',
 			vertex.label.font=1,			#the font of the name labels
 			vertex.label=V(g1)$name		#specifies the lables of the vertices. in this case the 'name' attribute is used
 			);
+			legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+			a=dev.off();
 		} else if (mode=='svg') {
 			f1<-paste(filename,"_1",".svg", sep="");
 			svg(f1);
@@ -135,24 +154,26 @@ save_network<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames='',
 			vertex.label.font=1,			#the font of the name labels
 			vertex.label=V(g1)$name		#specifies the lables of the vertices. in this case the 'name' attribute is used
 			);
-		} else {
+			legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+			a=dev.off();
+		} else if (mode=='eps') {
 				f1<-paste(filename,"_1",".eps", sep="");
 				postscript(f1, fonts=c("serif", "Palatino"),horizontal = FALSE, onefile = FALSE, paper = "special", height = 8, width = 10)
 				plot(g1, 
-				layout=layout, 
-				vertex.label.family="serif",
-				edge.label.family="Palatino", 			
-				main=filename,	#specifies the title
-				vertex.label.dist=0,			#puts the name labels slightly off the dots
-				vertex.frame.color='black', 		#the color of the border of the dots 
-				vertex.label.color='black',		#the color of the name labels
-				vertex.label.font=1,			#the font of the name labels
-				vertex.label=V(g1)$name		#specifies the lables of the vertices. in this case the 'name' attribute is used
+					layout=layout, 
+					vertex.label.family="serif",
+					edge.label.family="Palatino", 			
+					main=filename,	#specifies the title
+					vertex.label.dist=0,			#puts the name labels slightly off the dots
+					vertex.frame.color='black', 		#the color of the border of the dots 
+					vertex.label.color='black',		#the color of the name labels
+					vertex.label.font=1,			#the font of the name labels
+					vertex.label=V(g1)$name		#specifies the lables of the vertices. in this case the 'name' attribute is used
 				);
-		}
-		legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
-		a=dev.off();
-		print("done")
+				legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+				a=dev.off();
+		} 
+		if (mode!="screen") print("done")
 	}
 }
 
@@ -221,6 +242,8 @@ save_network_big<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames
 			vertex.label.font=1,			#the font of the name labels
 			vertex.label=NA		#specifies the lables of the vertices. in this case the 'name' attribute is used
 			);
+			legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+			a=dev.off();
 	} else if (mode=='svg') {
 			f2<-paste(filename,"_2",".svg", sep="");
 			svg(f2);		
@@ -233,7 +256,9 @@ save_network_big<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames
 			vertex.label.font=1,			#the font of the name labels
 			vertex.label=NA		#specifies the lables of the vertices. in this case the 'name' attribute is used
 			);
-	} else {
+			legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+			a=dev.off();
+	} else if (mode=='eps') {
 			f2<-paste(filename,"_2",".eps", sep="");
 			postscript(f2, , fonts=c("serif", "Palatino"), horizontal = FALSE, onefile = FALSE, paper = "special", height = 8, width = 10)
 			plot(g2, 
@@ -248,10 +273,23 @@ save_network_big<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames
 				vertex.label.font=1,			#the font of the name labels
 				vertex.label=NA		#specifies the lables of the vertices. in this case the 'name' attribute is used
 				);
+				legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+				a=dev.off();
+	} else {
+		plot(g2, 
+				layout=layout, 
+				vertex.label.family="serif",
+				edge.label.family="Palatino", 	
+				vertex.label.cex=1,
+				main=filename,	#specifies the title
+				vertex.label.dist=0,			#puts the name labels slightly off the dots
+				vertex.frame.color='black', 		#the color of the border of the dots 
+				vertex.label.color='black',		#the color of the name labels
+				vertex.label.font=1,			#the font of the name labels
+				vertex.label=NA		#specifies the lables of the vertices. in this case the 'name' attribute is used
+				);
+				legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
 	}
-	legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
-	
-	a=dev.off();
 	if (mode=='png') {
 			f1<-paste(filename,"_1",".png", sep="");
 			png(f1, imagesize, imagesize, pointsize = 14);
@@ -262,8 +300,10 @@ save_network_big<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames
 			vertex.frame.color='black',     #the color of the border of the dots 
 			vertex.label.color='black',		#the color of the name labels
 			vertex.label.font=1,			#the font of the name labels
-			vertex.label=NA		#specifies the lables of the vertices. in this case the 'name' attribute is used
+			vertex.label=NA		#specifies the lables of the vertices. in this case the 'name' attribute is used			
 			);
+			legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+			a=dev.off();
 	} else if (mode=='svg') {
 			f1<-paste(filename,"_1",".svg", sep="");
 			svg(f1);		
@@ -279,7 +319,9 @@ save_network_big<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames
 				vertex.label.font=1,			#the font of the name labels
 				vertex.label=NA		#specifies the lables of the vertices. in this case the 'name' attribute is used
 				);
-	} else {
+				legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+				a=dev.off();
+	} else if (mode=='eps'){
 			f1<-paste(filename,"_1",".eps", sep="");
 			postscript(f1, , fonts=c("serif", "Palatino"), horizontal = FALSE, onefile = FALSE, paper = "special", height = 8, width = 10)
 			plot(g1, 
@@ -294,10 +336,13 @@ save_network_big<-function(g1,g2, filename, layout=layout.kamada.kawai, taxnames
 				vertex.label.font=1,			#the font of the name labels
 				vertex.label=NA		#specifies the lables of the vertices. in this case the 'name' attribute is used
 				);
-	}
-	#print(nv);	
-	#print(cv);
-	legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
-	a=dev.off();
-	print("done")
+				legend(x="bottomright",title="Legend", legend=nv,pt.bg=cv, pt.cex=2, col="black",pch=21, yjust=0, lty=0);
+				a=dev.off();
+	} 
+	if (mode!="screen") print("done")
+}
+
+#Wrapper to plot to std output
+plot_network<-function(g1,g2,layout=layout.kamada.kawai, taxnames='') {	
+	save_network(g1,g2,filename='dummy',taxnames=taxnames, layout=layout,mode='screen');
 }

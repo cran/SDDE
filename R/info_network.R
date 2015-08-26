@@ -1,6 +1,5 @@
 info_network<-function(g1,g2, taxnames='') {	
 	
-	
 	if (taxnames=='') {
 		#we take all the node node in graph1			
 		vertex_of_g2<-V(g2)[!(V(g2)$name %in% V(g1)$name)]$name;			
@@ -15,10 +14,15 @@ info_network<-function(g1,g2, taxnames='') {
 		str1=paste('Selected nodes "',taxnames,'" in network Y   :');
 		cat(str1, length(vertex_of_g2),"\n"); 
 	}
+	path_to_investigate=(vertex_of_g1*(vertex_of_g1-1))/2;
+	if (is.directed(g1)||is.directed(g2)) {
+	path_to_investigate=(vertex_of_g1*vertex_of_g1)-vertex_of_g1;
+	}
+	
 	cat("Number of edges in network Y:", length(E(g2)), "\n");
 	cat("Number of nodes in network Y:", length(V(g2)$name), "\n"); 
 	cat("Number of nodes in network X:", length(V(g1)$name), "\n"); 
-	cat("Total of pathways to investigate:", (vertex_of_g1*(vertex_of_g1-1))/2,"\n");
+	cat("Total of pathways to investigate:", path_to_investigate,"\n");
 	cat("Clustering coefficient network Y:", transitivity(g2),"\n");
 	cat("Clustering coefficient network X:", transitivity(g1),"\n");
 	cat("Average degree \u00B1 std in network Y:", mean(degree(g2)),"\u00B1",sd(degree(g2)),"\n");
@@ -141,4 +145,6 @@ info_node<-function(g1,g2, taxnames='default', maxnode=0, maxdistance=0) {
 	print(summary(as.factor(V(g2)$tax)));	
 	return(list("reach_count"=reach, "reach_max_dist"=reach_dist_max, "reach_min_dist"=reach_dist_min,"reach_mean_dist"=reach_dist_means)); 	
 }
+
+
 
